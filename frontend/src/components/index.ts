@@ -3,3 +3,4 @@ export * from './Transcript';
 export * from './Controls';
 export * from './Interview';
 export * from './Chat';
+export * from './Workspace';

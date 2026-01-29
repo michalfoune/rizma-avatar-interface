@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useInterview } from '@/hooks';
-import { InterviewLayout } from '@/components/Interview';
+import { WorkspaceLayout } from '@/components/Workspace';
 import { StartSessionResponse } from '@/types';
 
 export default function InterviewPage() {
@@ -237,9 +237,9 @@ export default function InterviewPage() {
     );
   }
 
-  // Active session: Show interview UI
+  // Active session: Show workspace UI
   return (
-    <InterviewLayout
+    <WorkspaceLayout
       sessionData={sessionData}
       state={state}
       onEndSession={handleEnd}
