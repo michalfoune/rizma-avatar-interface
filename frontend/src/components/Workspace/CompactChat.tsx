@@ -4,14 +4,14 @@ import { useEffect, useRef } from 'react';
 import { TranscriptEntry, InterviewPhase } from '@/types';
 
 interface CompactChatProps {
-  interviewerName: string;
+  agentName: string;
   messages: TranscriptEntry[];
   onSendMessage: (content: string) => void;
   currentPhase: InterviewPhase;
 }
 
 export function CompactChat({
-  interviewerName,
+  agentName,
   messages,
   onSendMessage,
   currentPhase,
@@ -57,7 +57,7 @@ export function CompactChat({
             >
               <div className="message-header">
                 <span className="sender">
-                  {entry.role === 'candidate' ? 'You' : interviewerName}
+                  {entry.role === 'candidate' ? 'You' : agentName}
                 </span>
                 <span className="time">{formatTime(entry.timestamp)}</span>
               </div>

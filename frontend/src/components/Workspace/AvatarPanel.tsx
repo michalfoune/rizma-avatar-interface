@@ -5,7 +5,7 @@ import { AvatarView } from '@/components/Avatar';
 interface AvatarPanelProps {
   heygenToken: string;
   avatarId: string;
-  interviewerName: string;
+  agentName: string;
   isMicActive: boolean;
   onMicStart: () => void;
   onMicStop: () => void;
@@ -17,7 +17,7 @@ interface AvatarPanelProps {
 export function AvatarPanel({
   heygenToken,
   avatarId,
-  interviewerName,
+  agentName,
   isMicActive,
   onMicStart,
   onMicStop,
@@ -28,7 +28,7 @@ export function AvatarPanel({
   return (
     <div className="avatar-panel">
       <div className="avatar-header">
-        <span className="avatar-name">{interviewerName}</span>
+        <span className="avatar-name">{agentName}</span>
         <span className={`avatar-status ${!controlsDisabled ? 'active' : ''}`}>
           {controlsDisabled ? 'Offline' : 'Online'}
         </span>
