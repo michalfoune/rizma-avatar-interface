@@ -49,8 +49,8 @@ export default function InterviewPage() {
       <main className="setup-container">
         <div className="setup-card">
           <img src="/rizma-logo.png" alt="Rizma" className="logo" />
-          <h1>rizma.ai Interview Simulation</h1>
-          <p className="subtitle">Practice your interview skills with an AI-powered interviewer</p>
+          <h1>rizma.ai</h1>
+          <p className="subtitle">AI-assisted data analytics workspace</p>
 
           <div className="form">
             <div className="field">
@@ -65,13 +65,13 @@ export default function InterviewPage() {
               />
             </div>
             <div className="field">
-              <label htmlFor="role">Target Role</label>
+              <label htmlFor="role">Workspace</label>
               <input
                 id="role"
                 type="text"
                 value={targetRole}
                 onChange={(e) => setTargetRole(e.target.value)}
-                placeholder="e.g., Senior Software Engineer"
+                placeholder="e.g., Sales Analytics"
                 disabled={isStarting}
               />
             </div>
@@ -100,7 +100,7 @@ export default function InterviewPage() {
               onClick={handleStart}
               disabled={isStarting}
             >
-              {isStarting ? 'Starting...' : 'Start Interview'}
+              {isStarting ? 'Loading...' : 'Launch Workspace'}
             </button>
           </div>
         </div>

@@ -86,32 +86,49 @@ export function DataWorkspace({ onQueryExecute }: DataWorkspaceProps) {
     return `${prefix}${value.toFixed(1)}%`;
   };
 
+  const cellStyle = {
+    padding: '6px 14px',
+    fontSize: '10px',
+    borderRight: '1px solid #4a4a6a',
+    borderBottom: '1px solid #4a4a6a',
+  };
+
+  const headerStyle = {
+    ...cellStyle,
+    fontSize: '9px',
+    fontWeight: 600,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.5px',
+    background: 'var(--bg-tertiary)',
+    borderTop: '1px solid #4a4a6a',
+  };
+
   const renderTable = () => (
     <div className="table-container">
-      <table className="data-table">
+      <table className="data-table" style={{ borderCollapse: 'collapse', fontSize: '10px' }}>
         <thead>
           <tr>
-            <th className="checkbox-col">
+            <th style={headerStyle}>
               <input
                 type="checkbox"
                 checked={selectedRows.size === SAMPLE_DATA.length}
                 onChange={handleSelectAll}
               />
             </th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Region</th>
-            <th>Manager</th>
-            <th className="number-col">Revenue</th>
-            <th className="number-col">Expenses</th>
-            <th className="number-col">Profit</th>
-            <th className="number-col">Growth</th>
-            <th className="number-col">Customers</th>
-            <th className="number-col">Employees</th>
-            <th className="number-col">Satisfaction</th>
-            <th>Status</th>
-            <th>Last Updated</th>
+            <th style={headerStyle}>ID</th>
+            <th style={headerStyle}>Name</th>
+            <th style={headerStyle}>Department</th>
+            <th style={headerStyle}>Region</th>
+            <th style={headerStyle}>Manager</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Revenue</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Expenses</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Profit</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Growth</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Customers</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Employees</th>
+            <th style={{...headerStyle, textAlign: 'right'}}>Satisfaction</th>
+            <th style={headerStyle}>Status</th>
+            <th style={headerStyle}>Last Updated</th>
           </tr>
         </thead>
         <tbody>
@@ -121,7 +138,7 @@ export function DataWorkspace({ onQueryExecute }: DataWorkspaceProps) {
               className={selectedRows.has(row.id) ? 'selected' : ''}
               onClick={() => handleRowSelect(row.id)}
             >
-              <td className="checkbox-col">
+              <td style={cellStyle}>
                 <input
                   type="checkbox"
                   checked={selectedRows.has(row.id)}
@@ -129,26 +146,26 @@ export function DataWorkspace({ onQueryExecute }: DataWorkspaceProps) {
                   onClick={(e) => e.stopPropagation()}
                 />
               </td>
-              <td className="id-col">{row.id}</td>
-              <td className="name-col">{row.name}</td>
-              <td>{row.department}</td>
-              <td>{row.region}</td>
-              <td>{row.manager}</td>
-              <td className="number-col">{formatCurrency(row.revenue)}</td>
-              <td className="number-col">{formatCurrency(row.expenses)}</td>
-              <td className={`number-col ${row.profit >= 0 ? 'positive' : 'negative'}`}>
+              <td style={{...cellStyle, color: 'var(--text-muted)', fontFamily: 'monospace'}}>{row.id}</td>
+              <td style={{...cellStyle, fontWeight: 500}}>{row.name}</td>
+              <td style={cellStyle}>{row.department}</td>
+              <td style={cellStyle}>{row.region}</td>
+              <td style={cellStyle}>{row.manager}</td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace'}}>{formatCurrency(row.revenue)}</td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace'}}>{formatCurrency(row.expenses)}</td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace', color: row.profit >= 0 ? 'var(--success)' : 'var(--error)'}}>
                 {formatCurrency(row.profit)}
               </td>
-              <td className={`number-col ${row.growth >= 0 ? 'positive' : 'negative'}`}>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace', color: row.growth >= 0 ? 'var(--success)' : 'var(--error)'}}>
                 {formatGrowth(row.growth)}
               </td>
-              <td className="number-col">{row.customers.toLocaleString()}</td>
-              <td className="number-col">{row.employees}</td>
-              <td className="number-col">{row.satisfaction.toFixed(1)}</td>
-              <td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace'}}>{row.customers.toLocaleString()}</td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace'}}>{row.employees}</td>
+              <td style={{...cellStyle, textAlign: 'right', fontFamily: 'monospace'}}>{row.satisfaction.toFixed(1)}</td>
+              <td style={cellStyle}>
                 <span className={`status-badge ${row.status}`}>{row.status}</span>
               </td>
-              <td className="date-col">{row.lastUpdated}</td>
+              <td style={{...cellStyle, fontFamily: 'monospace', color: 'var(--text-muted)'}}>{row.lastUpdated}</td>
             </tr>
           ))}
         </tbody>
@@ -338,34 +355,42 @@ export function DataWorkspace({ onQueryExecute }: DataWorkspaceProps) {
         }
         .data-table {
           width: 100%;
-          border-collapse: collapse;
-          font-size: 13px;
+          border-collapse: separate;
+          border-spacing: 0;
+          font-size: 11px;
         }
-        .data-table th,
-        .data-table td {
-          padding: 10px 12px;
+        .data-table :global(th),
+        .data-table :global(td) {
+          padding: 8px 16px;
           text-align: left;
-          border-bottom: 1px solid var(--border);
+          white-space: nowrap;
+          border-bottom: 1px solid #3a3a5e;
+          border-right: 1px solid #3a3a5e;
         }
-        .data-table th {
+        .data-table :global(th:first-child),
+        .data-table :global(td:first-child) {
+          border-left: 1px solid #3a3a5e;
+        }
+        .data-table :global(th) {
           background: var(--bg-tertiary);
           color: var(--text-secondary);
-          font-weight: 500;
-          font-size: 12px;
+          font-weight: 600;
+          font-size: 10px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
           position: sticky;
           top: 0;
           z-index: 1;
+          border-top: 1px solid #3a3a5e;
         }
-        .data-table tbody tr {
+        .data-table :global(tbody tr) {
           cursor: pointer;
           transition: background 0.15s;
         }
-        .data-table tbody tr:hover {
+        .data-table :global(tbody tr:hover) {
           background: var(--bg-tertiary);
         }
-        .data-table tbody tr.selected {
+        .data-table :global(tbody tr.selected) {
           background: rgba(100, 100, 160, 0.15);
         }
         .checkbox-col {
@@ -378,16 +403,16 @@ export function DataWorkspace({ onQueryExecute }: DataWorkspaceProps) {
         }
         .name-col {
           font-weight: 500;
-          white-space: nowrap;
         }
         .date-col {
           font-family: monospace;
-          font-size: 12px;
+          font-size: 10px;
           color: var(--text-muted);
         }
         .number-col {
           text-align: right;
           font-family: monospace;
+          font-size: 10px;
         }
         .number-col.positive {
           color: var(--success);

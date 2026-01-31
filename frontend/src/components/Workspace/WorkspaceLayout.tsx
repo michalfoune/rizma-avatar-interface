@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { InterviewState, InterviewPhase, StartSessionResponse } from '@/types';
 import { ProgressBar } from './ProgressBar';
 import { ToolsPanel } from './ToolsPanel';
@@ -18,8 +18,6 @@ interface WorkspaceLayoutProps {
   pushToTalkEnabled?: boolean;
 }
 
-const DEFAULT_INTERVIEW_DURATION = 20 * 60;
-
 export function WorkspaceLayout({
   sessionData,
   state,
@@ -29,45 +27,13 @@ export function WorkspaceLayout({
   onPushToTalkStop,
   pushToTalkEnabled = true,
 }: WorkspaceLayoutProps) {
-  const [timeRemaining, setTimeRemaining] = useState(DEFAULT_INTERVIEW_DURATION);
   const [activeTool, setActiveTool] = useState<string | null>('sql');
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const interviewerName = 'Sarah';
-
-  useEffect(() => {
-    if (state.phase !== InterviewPhase.IDLE && state.phase !== InterviewPhase.COMPLETED) {
-      timerRef.current = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 0) {
-            if (timerRef.current) clearInterval(timerRef.current);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [state.phase]);
-
-  useEffect(() => {
-    if (state.phase === InterviewPhase.COMPLETED && timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-  }, [state.phase]);
+  const agentName = 'Sarah';
 
   const controlsDisabled =
     state.phase === InterviewPhase.EVALUATION ||
     state.phase === InterviewPhase.COMPLETED;
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
 
   return (
     <div className="workspace-layout">
@@ -76,15 +42,6 @@ export function WorkspaceLayout({
         <div className="header-left">
           <img src="/rizma-logo.png" alt="Rizma" className="logo" />
           <ProgressBar currentPhase={state.phase} />
-        </div>
-        <div className="header-center">
-          <span className="timer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            {formatTime(timeRemaining)}
-          </span>
         </div>
         <div className="header-right">
           <span className={`connection-status ${state.isConnected ? 'connected' : ''}`}>
@@ -127,7 +84,7 @@ export function WorkspaceLayout({
             <AvatarPanel
               heygenToken={sessionData.heygenToken}
               avatarId={sessionData.avatarId}
-              interviewerName={interviewerName}
+              agentName={agentName}
               isMicActive={state.isPushToTalkActive}
               onMicStart={onPushToTalkStart}
               onMicStop={onPushToTalkStop}
@@ -142,7 +99,7 @@ export function WorkspaceLayout({
 
           <div className="chat-section">
             <CompactChat
-              interviewerName={interviewerName}
+              agentName={agentName}
               messages={state.transcript}
               onSendMessage={onSendMessage}
               currentPhase={state.phase}
@@ -196,22 +153,6 @@ export function WorkspaceLayout({
         .logo {
           width: 32px;
           height: 32px;
-          border-radius: 6px;
-        }
-        .header-center {
-          display: flex;
-          justify-content: center;
-        }
-        .timer {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--text-primary);
-          font-family: monospace;
-          padding: 6px 12px;
-          background: var(--bg-tertiary);
           border-radius: 6px;
         }
         .header-right {
@@ -279,7 +220,7 @@ export function WorkspaceLayout({
         .main {
           flex: 1;
           display: grid;
-          grid-template-columns: 1fr 420px;
+          grid-template-columns: minmax(200px, 1fr) 420px;
           gap: 16px;
           padding: 16px;
           overflow: hidden;
@@ -290,6 +231,8 @@ export function WorkspaceLayout({
           display: flex;
           flex-direction: column;
           min-height: 0;
+          min-width: 0;
+          overflow: hidden;
         }
 
         /* Assistant Panel */
@@ -298,6 +241,8 @@ export function WorkspaceLayout({
           flex-direction: column;
           gap: 12px;
           min-height: 0;
+          flex-shrink: 0;
+          width: 420px;
         }
         .tools-section {
           flex-shrink: 0;
@@ -364,7 +309,7 @@ export function WorkspaceLayout({
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 600px) {
           .main {
             grid-template-columns: 1fr;
             grid-template-rows: 1fr auto;
@@ -373,6 +318,7 @@ export function WorkspaceLayout({
             flex-direction: row;
             flex-wrap: wrap;
             gap: 12px;
+            width: 100%;
           }
           .tools-section {
             flex: 1;
@@ -388,7 +334,7 @@ export function WorkspaceLayout({
           }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
           .header {
             flex-wrap: wrap;
             gap: 12px;

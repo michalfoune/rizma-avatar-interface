@@ -360,7 +360,7 @@ export function AvatarView({
       {isLoading && (
         <div className="avatar-loading">
           <div className="spinner" />
-          <p>Initializing interviewer...</p>
+          <p>Loading agent...</p>
         </div>
       )}
       {error && (

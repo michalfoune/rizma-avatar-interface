@@ -209,11 +209,10 @@ class InterviewOrchestrator:
     ) -> str:
         """Generate the initial greeting message."""
         return (
-            f"Hello {session.candidate_name}! I'm {personality.name}, and I'll be your "
-            f"interviewer today for the {session.target_role} position. "
-            f"{personality.phase_prompts.greeting} "
-            "Before we begin, could you briefly introduce yourself and tell me "
-            "what interests you about this role?"
+            f"Hello {session.candidate_name}! I'm {personality.name}, your AI assistant "
+            f"for the {session.target_role} workspace. "
+            "I'm here to help you explore and analyze your data using our connected tools. "
+            "What would you like to work on today?"
         )
 
     def _handle_greeting(self, session: InterviewSession) -> Tuple[str, None]:
