@@ -220,7 +220,7 @@ export function WorkspaceLayout({
         .main {
           flex: 1;
           display: grid;
-          grid-template-columns: 1fr 420px;
+          grid-template-columns: minmax(200px, 1fr) 420px;
           gap: 16px;
           padding: 16px;
           overflow: hidden;
@@ -231,6 +231,8 @@ export function WorkspaceLayout({
           display: flex;
           flex-direction: column;
           min-height: 0;
+          min-width: 0;
+          overflow: hidden;
         }
 
         /* Assistant Panel */
@@ -239,6 +241,8 @@ export function WorkspaceLayout({
           flex-direction: column;
           gap: 12px;
           min-height: 0;
+          flex-shrink: 0;
+          width: 420px;
         }
         .tools-section {
           flex-shrink: 0;
@@ -305,7 +309,7 @@ export function WorkspaceLayout({
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 600px) {
           .main {
             grid-template-columns: 1fr;
             grid-template-rows: 1fr auto;
@@ -314,6 +318,7 @@ export function WorkspaceLayout({
             flex-direction: row;
             flex-wrap: wrap;
             gap: 12px;
+            width: 100%;
           }
           .tools-section {
             flex: 1;
@@ -329,7 +334,7 @@ export function WorkspaceLayout({
           }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
           .header {
             flex-wrap: wrap;
             gap: 12px;
